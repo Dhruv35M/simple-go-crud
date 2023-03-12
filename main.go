@@ -57,8 +57,10 @@ func main() {
 		})
 	})
 
+	// delete route for books
 	books.DELETE(":id", func(ctx *gin.Context) {
 		id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+		// if id is not valid
 		if err != nil {
 			ctx.JSON(http.StatusOK, gin.H{
 				"success": false,
@@ -66,6 +68,7 @@ func main() {
 			})
 			return
 		}
+		// if book is not avaliable
 		err = db.Delete(uint(id))
 		if err != nil {
 			ctx.JSON(http.StatusOK, gin.H{
@@ -75,6 +78,7 @@ func main() {
 			return
 		}
 
+		// success (book deleted)
 		ctx.JSON(http.StatusOK, gin.H{
 			"success": true,
 			"message": "book deleted successfully",
